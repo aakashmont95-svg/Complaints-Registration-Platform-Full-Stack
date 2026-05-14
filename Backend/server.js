@@ -14,8 +14,6 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5500',
-  credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -117,7 +115,7 @@ app.post('/api/auth/register', async (req, res) => {
     if (new Date() > user.otp_expiry) return res.status(400).json({ message: 'OTP expired' });
 
     await db.update(users)
-      .set({ 
+      .set({
         password, // Plain text as requested
         is_verified: true,
         otp: null,
@@ -183,15 +181,15 @@ app.post('/api/ai/question', authenticateToken, async (req, res) => {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    
+
     if (!text) throw new Error('Empty response from AI');
-    
+
     res.json({ question: text.trim() });
   } catch (error) {
     console.error('Gemini Error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error generating AI question',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -236,14 +234,14 @@ app.get('/api/admin/complaints', authenticateToken, isAdmin, async (req, res) =>
       },
       orderBy: [desc(complaints.created_at)]
     });
-    
+
     // Flatten result to match frontend expectation
     const result = allComplaints.map(c => ({
       ...c,
       userName: c.user.name,
       userEmail: c.user.email
     }));
-    
+
     res.json(result);
   } catch (error) {
     console.error(error);
