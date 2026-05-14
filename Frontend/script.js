@@ -1,4 +1,4 @@
-const BACKEND_BASE_URL = 'http://127.0.0.1:3000/api';
+const BACKEND_BASE_URL = 'https://complaints-registration-platform-full-virj.onrender.com';
 
 // State
 let currentUser = null;
@@ -16,7 +16,7 @@ function showPage(pageId) {
     sections.forEach(s => s.classList.add('hidden'));
     const target = document.getElementById(pageId);
     if (target) target.classList.remove('hidden');
-    
+
     // Update Navbar visibility and links
     if (currentUser) {
         navbar.classList.remove('hidden');
@@ -195,10 +195,10 @@ async function submitComplaint() {
         const res = await fetch(`${BACKEND_BASE_URL}/complaints`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                complaint_text: text, 
-                ai_question: currentAiQuestion, 
-                ai_answer: answer 
+            body: JSON.stringify({
+                complaint_text: text,
+                ai_question: currentAiQuestion,
+                ai_answer: answer
             }),
             credentials: 'include'
         });
@@ -222,7 +222,7 @@ async function submitComplaint() {
 async function fetchMyComplaints() {
     const container = document.getElementById('complaints-list');
     container.innerHTML = '<p>Loading your complaints...</p>';
-    
+
     try {
         const res = await fetch(`${BACKEND_BASE_URL}/complaints/my`, { credentials: 'include' });
         const data = await res.json();
@@ -258,7 +258,7 @@ async function fetchMyComplaints() {
 async function fetchAllComplaints() {
     const container = document.getElementById('admin-complaints-list');
     container.innerHTML = '<p>Loading all complaints...</p>';
-    
+
     try {
         const res = await fetch(`${BACKEND_BASE_URL}/admin/complaints`, { credentials: 'include' });
         const data = await res.json();
