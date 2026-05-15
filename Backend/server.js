@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-
+  origin: 'https://aakashmont95-svg.github.io',
+  credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
