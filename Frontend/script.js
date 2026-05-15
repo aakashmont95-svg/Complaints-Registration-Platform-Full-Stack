@@ -52,7 +52,7 @@ function toggleLoading(show) {
 
 async function checkSession() {
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/auth/me`, { credentials: 'include' });
+        const res = await fetch(`${BACKEND_BASE_URL}/api/auth/me`, { credentials: 'include' });
         if (res.ok) {
             currentUser = await res.json();
             if (currentUser.role === 'admin') showPage('admin-page');
@@ -72,7 +72,7 @@ async function sendOtp() {
 
     toggleLoading(true);
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/auth/send-otp`, {
+        const res = await fetch(`${BACKEND_BASE_URL}/api/auth/send-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email })
@@ -103,7 +103,7 @@ async function register() {
 
     toggleLoading(true);
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/auth/register`, {
+        const res = await fetch(`${BACKEND_BASE_URL}/api/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, otp, password })
@@ -128,7 +128,7 @@ async function login() {
 
     toggleLoading(true);
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/auth/login`, {
+        const res = await fetch(`${BACKEND_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
@@ -151,7 +151,7 @@ async function login() {
 }
 
 async function logout() {
-    await fetch(`${BACKEND_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
+    await fetch(`${BACKEND_BASE_URL}/api/auth/logout`, { method: 'POST', credentials: 'include' });
     currentUser = null;
     showPage('login-page');
 }
@@ -164,7 +164,7 @@ async function getAiQuestion() {
 
     toggleLoading(true);
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/ai/question`, {
+        const res = await fetch(`${BACKEND_BASE_URL}/api/ai/question`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ complaint_text: text }),
@@ -192,7 +192,7 @@ async function submitComplaint() {
 
     toggleLoading(true);
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/complaints`, {
+        const res = await fetch(`${BACKEND_BASE_URL}/api/complaints`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -224,7 +224,7 @@ async function fetchMyComplaints() {
     container.innerHTML = '<p>Loading your complaints...</p>';
 
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/complaints/my`, { credentials: 'include' });
+        const res = await fetch(`${BACKEND_BASE_URL}/api/complaints/my`, { credentials: 'include' });
         const data = await res.json();
         if (res.ok) {
             container.innerHTML = data.length ? '' : '<p>No complaints yet.</p>';
@@ -260,7 +260,7 @@ async function fetchAllComplaints() {
     container.innerHTML = '<p>Loading all complaints...</p>';
 
     try {
-        const res = await fetch(`${BACKEND_BASE_URL}/admin/complaints`, { credentials: 'include' });
+        const res = await fetch(`${BACKEND_BASE_URL}/api/admin/complaints`, { credentials: 'include' });
         const data = await res.json();
         if (res.ok) {
             container.innerHTML = data.length ? '' : '<p>No complaints found in system.</p>';
