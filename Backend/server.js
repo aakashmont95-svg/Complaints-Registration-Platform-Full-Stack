@@ -10,6 +10,7 @@ import { users, complaints } from './schema.js';
 import { eq, and, desc } from 'drizzle-orm';
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -150,9 +151,9 @@ app.post('/api/auth/login', async (req, res) => {
     );
 
     res.cookie('token', token, {
-      httpOnly: false, // As requested
-      secure: false,   // As requested
-      sameSite: 'Lax', // As requested
+      httpOnly: false,
+      secure: true,
+      sameSite: 'none',
       maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -164,7 +165,11 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 app.post('/api/auth/logout', (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: false,
+    secure: true,
+    sameSite: 'none'
+  });
   res.json({ message: 'Logged out' });
 });
 
